@@ -1,7 +1,10 @@
 export default defineEventHandler(async (event) => {
 
   const { count } = getQuery(event)
-  const itemCounter = parseInt(count) || 20
+  let itemCounter = 20
+  if (Boolean(count)) {
+    itemCounter = Number(count) > 200 ? 200 : Number(count)
+  }
    
   const fakeProduct = () => {
     return {
