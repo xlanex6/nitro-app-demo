@@ -6,3 +6,5 @@ dist
 .output
 .env
 .vercel
+
+data

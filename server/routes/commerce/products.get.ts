@@ -1,30 +1,14 @@
 export default defineEventHandler(async (event) => {
+  
+  const { count, offset } = getQuery(event)
+  let itemCounter = Number(count) || 20
 
-  const { count } = getQuery(event)
-  let itemCounter = 20
-  if (Boolean(count)) {
-    itemCounter = Number(count) > 200 ? 200 : Number(count)
-  }
-   
-  const fakeProduct = () => {
-    return {
-      name: $faker.commerce.productName(),
-      price: $faker.commerce.price(
-        { min: 1, max: 999, dec: 2 }
-      ),
-      image: $faker.image.urlPicsumPhotos(),
-      description: $faker.commerce.productDescription(),
-      rating: {
-        rate: $faker.number.int({ min: 1, max: 5 }),
-        count: $faker.number.int({ min: 1, max: 1000 })
-      }
-    }
-  }
+  const keys = await useStorage('db').getKeys()
 
-  const products = Array.from({ length: itemCounter }, fakeProduct)
+  const keyList = keys.slice(Number(offset) + 1, Number(offset) + 1  + itemCounter)
 
-  return {
-    products
-  }
+  const products = await useStorage('db').getItems(keyList)
 
-  })  
+  return products.map((product) => product.value )
+
+})

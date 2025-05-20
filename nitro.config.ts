@@ -7,6 +7,9 @@ export default defineNitroConfig({
       base: './data/db'
     }
   },
+  scheduledTasks: {
+    // '0 2 * * *': ['gen']
+  },
   experimental: {
     openAPI: {
       meta: {
@@ -15,6 +18,6 @@ export default defineNitroConfig({
         version: '1.0'
       }
     },
-
+    tasks: true
   }
 });
